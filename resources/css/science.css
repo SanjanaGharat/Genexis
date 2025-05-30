@@ -1,0 +1,13 @@
+        .research-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 245, 208, 0.2);
+        }
+        .methodology-step::before {
+            content: "";
+            position: absolute;
+            left: -28px;
+            top: 0;
+            height: 100%;
+            width: 2px;
+            background: linear-gradient(to bottom, #00E5FF, #00F5D0);
+        }

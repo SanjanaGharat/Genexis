@@ -1,0 +1,8 @@
+ .contact-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 229, 255, 0.2);
+        }
+        .input-focus:focus {
+            border-color: #00E5FF;
+            box-shadow: 0 0 0 3px rgba(0, 229, 255, 0.2);
+        }

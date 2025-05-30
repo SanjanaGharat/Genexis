@@ -1,0 +1,16 @@
+ .case-study-card {
+            transition: all 0.3s ease;
+            background: linear-gradient(145deg, rgba(29,78,107,0.3) 0%, rgba(0,0,0,0.5) 100%);
+        }
+        .case-study-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 229, 255, 0.3);
+        }
+        .testimonial-quote::before {
+            content: '"';
+            font-size: 4rem;
+            color: rgba(0, 229, 255, 0.2);
+            position: absolute;
+            left: -10px;
+            top: -20px;
+        }

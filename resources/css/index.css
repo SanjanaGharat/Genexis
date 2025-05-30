@@ -1,0 +1,51 @@
+        body {
+            font-family: 'Montserrat', sans-serif;
+        }
+        .futuristic-text {
+            font-family: 'Space Grotesk', sans-serif;
+        }
+        .hero-gradient {
+            background: linear-gradient(135deg, #000000 0%, #1D4E6B 100%);
+        }
+.dropdown-menu {
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.3s ease, opacity 0.3s ease, visibility 0.3s ease;
+    }
+    
+    .group:hover .dropdown-menu {
+        opacity: 1;
+        visibility: visible;
+    }
+    
+    /* Smooth transitions for mobile menu */
+    #mobile-menu {
+        transition: all 0.3s ease-out;
+    }
+    
+    /* Gradient text for brand */
+    .gradient-text {
+        background-clip: text;
+        -webkit-background-clip: text;
+        color: transparent;
+    }
+    
+    /* Mobile dropdown styles */
+    .mobile-dropdown-toggle svg:last-child {
+        transition: transform 0.2s ease;
+    }
+    
+    .mobile-dropdown-toggle[aria-expanded="true"] svg:last-child {
+        transform: rotate(180deg);
+    }
+    
+    .mobile-dropdown-content {
+        transition: max-height 0.3s ease, opacity 0.2s ease;
+        overflow: hidden;
+        max-height: 0;
+    }
+    
+    .mobile-dropdown-content.show {
+        display: block;
+        max-height: 500px; /* Adjust based on your content */
+    }

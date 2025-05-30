@@ -1,0 +1,42 @@
+ @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700&display=swap');
+        
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: #000000;
+            color: #FFFFFF;
+        }
+        
+        .gradient-text {
+            background: linear-gradient(90deg, #00F5D0, #00E5FF);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        
+        .gradient-border {
+            border: 2px solid transparent;
+            border-image: linear-gradient(90deg, #00F5D0, #00E5FF);
+            border-image-slice: 1;
+        }
+        
+        .faq-item {
+            transition: all 0.3s ease;
+        }
+        
+        .faq-item:hover {
+            transform: translateX(5px);
+        }
+        
+        .active-faq {
+            border-left: 4px solid #00F5D0;
+        }
+        
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+        
+        .faq-answer.open {
+            max-height: 500px; /* Adjust based on your content */
+        }
