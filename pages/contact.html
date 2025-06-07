@@ -314,15 +314,21 @@ document.addEventListener('DOMContentLoaded', updateAuthButtons);
 
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
             <!-- Contact Methods -->
-            <div class="lg:col-span-2">
+<div class="lg:col-span-2">
     <div class="bg-primary bg-opacity-20 p-6 rounded-xl border border-primary border-opacity-30">
         <h2 class="text-xl font-semibold mb-4 text-primary-light">Get In Touch</h2>
-        <form class="space-y-4" action="https://formsubmit.co/sanjanagharat2004@gmail.com" method="POST">
-            <!-- Add hidden fields for FormSubmit features -->
+        
+        <!-- Success/Error Message Container (initially hidden) -->
+        <div id="form-message" class="hidden mb-4 p-4 rounded-lg text-sm"></div>
+        
+        <form id="contact-form" class="space-y-4" action="https://formsubmit.co/sanjanagharat2004@gmail.com" method="POST">
+            <!-- FormSubmit Configuration -->
             <input type="hidden" name="_captcha" value="false">
-            <input type="hidden" name="_next" value="https://yourdomain.com/thanks.html"> <!-- Replace with your thank you page -->
+            <input type="hidden" name="_next" value="#">
             <input type="hidden" name="_subject" value="New Contact Form Submission">
+            <input type="hidden" name="_template" value="table">
             
+            <!-- Form Fields -->
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                     <label class="block text-sm mb-1">First Name</label>
@@ -333,17 +339,21 @@ document.addEventListener('DOMContentLoaded', updateAuthButtons);
                     <input type="text" name="Last Name" class="w-full bg-primary bg-opacity-30 border border-primary border-opacity-50 rounded px-3 py-2 text-sm input-focus" required>
                 </div>
             </div>
+            
             <div>
                 <label class="block text-sm mb-1">Email</label>
                 <input type="email" name="Email" class="w-full bg-primary bg-opacity-30 border border-primary border-opacity-50 rounded px-3 py-2 text-sm input-focus" required>
             </div>
+            
             <div>
                 <label class="block text-sm mb-1">Organization</label>
                 <input type="text" name="Organization" class="w-full bg-primary bg-opacity-30 border border-primary border-opacity-50 rounded px-3 py-2 text-sm input-focus">
             </div>
+            
             <div>
                 <label class="block text-sm mb-1">Inquiry Type</label>
                 <select name="Inquiry Type" class="w-full bg-primary bg-opacity-30 border border-primary border-opacity-50 rounded px-3 py-2 text-sm input-focus" required>
+                    <option value="" disabled selected>Select an option</option>
                     <option>Research Collaboration</option>
                     <option>Clinical Partnership</option>
                     <option>Technical Support</option>
@@ -351,22 +361,92 @@ document.addEventListener('DOMContentLoaded', updateAuthButtons);
                     <option>Other</option>
                 </select>
             </div>
+            
             <div>
                 <label class="block text-sm mb-1">Message</label>
                 <textarea name="Message" rows="4" class="w-full bg-primary bg-opacity-30 border border-primary border-opacity-50 rounded px-3 py-2 text-sm input-focus" required></textarea>
             </div>
+            
             <div class="flex items-center">
                 <input type="checkbox" id="consent" name="Consent" class="mr-2 bg-primary border-primary-light input-focus" required>
                 <label for="consent" class="text-sm text-primary-light">
                     I agree to the privacy policy and terms of service
                 </label>
             </div>
-            <button type="submit" class="w-full bg-gradient-to-r from-primary-light to-accent text-black font-bold py-3 rounded-lg hover:opacity-90 transition">
-                Send Message
+            
+            <button type="submit" class="w-full bg-gradient-to-r from-primary-light to-accent text-black font-bold py-3 rounded-lg hover:opacity-90 transition flex justify-center items-center">
+                <span id="submit-text">Send Message</span>
+                <span id="spinner" class="hidden ml-2">
+                    <svg class="animate-spin h-5 w-5 text-black" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                </span>
             </button>
         </form>
     </div>
 </div>
+
+<script>
+    document.getElementById('contact-form').addEventListener('submit', async function(e) {
+        e.preventDefault();
+        
+        const form = e.target;
+        const formMessage = document.getElementById('form-message');
+        const submitText = document.getElementById('submit-text');
+        const spinner = document.getElementById('spinner');
+        
+        // Show loading state
+        submitText.textContent = 'Sending...';
+        spinner.classList.remove('hidden');
+        
+        try {
+            const response = await fetch(form.action, {
+                method: 'POST',
+                body: new FormData(form),
+                headers: {
+                    'Accept': 'application/json'
+                }
+            });
+            
+            if (response.ok) {
+                // Success
+                formMessage.textContent = 'Your message has been sent successfully!';
+                formMessage.classList.remove('hidden', 'bg-red-100', 'text-red-800');
+                formMessage.classList.add('bg-green-100', 'text-green-800');
+                form.reset();
+            } else {
+                throw new Error('Form submission failed');
+            }
+        } catch (error) {
+            // Error
+            formMessage.textContent = 'There was an error sending your message. Please try again later.';
+            formMessage.classList.remove('hidden', 'bg-green-100', 'text-green-800');
+            formMessage.classList.add('bg-red-100', 'text-red-800');
+        } finally {
+            // Reset button state
+            submitText.textContent = 'Send Message';
+            spinner.classList.add('hidden');
+            
+            // Scroll to message
+            formMessage.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+    });
+</script>
+
+<style>
+    .bg-green-100 { background-color: #dcfce7; }
+    .text-green-800 { color: #166534; }
+    .bg-red-100 { background-color: #fee2e2; }
+    .text-red-800 { color: #991b1b; }
+    .animate-spin {
+        animation: spin 1s linear infinite;
+    }
+    @keyframes spin {
+        from { transform: rotate(0deg); }
+        to { transform: rotate(360deg); }
+    }
+</style>
 
             <!-- Contact Info -->
             <div class="space-y-6">
