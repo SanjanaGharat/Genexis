@@ -11,7 +11,6 @@
 
 </head>
 <body class="bg-black text-white font-sans">
-
 <nav class="bg-black text-white px-4 py-3 sticky top-0 z-50 shadow-xl">
     <div class="max-w-7xl mx-auto flex justify-between items-center">
         <!-- Logo/Brand -->
@@ -23,6 +22,7 @@
                 <span class="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-teal-400 to-cyan-400">Gen<span class="font-extrabold">exis</span></span>
             </a>
         </div>
+        
         
         <!-- Mobile menu button -->
         <div class="md:hidden">
@@ -174,7 +174,7 @@
                 </button>
                 <div class="mobile-dropdown-content hidden pl-4 mt-1">
                     <a href="/pages/profile.html" class="block py-2 px-3 hover:bg-gray-800 rounded-md transition duration-200 flex items-center">
-                        <svg class="w-4 h-4 mr-2 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <svg class="w-4 h-4 mr-2 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 20" xmlns="http://www.w3.org/2000/svg">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
                         </svg>
                         Profile
@@ -255,53 +255,74 @@
             <a href="/pages/login.html" id="mobile-login-button" class="block w-full bg-gradient-to-r from-teal-500 to-cyan-500 hover:from-teal-600 hover:to-cyan-600 px-4 py-2 rounded-md font-medium text-center transition duration-300">
                 Login / Signup
             </a>
-            <a href="/pages/profile.html" id="mobile-profile-button" class="hidden w-full bg-gray-800 hover:bg-gray-700 px-4 py-2 rounded-md font-medium text-center transition duration-300 flex items-center justify-center">
-                <svg class="w-5 h-5 mr-2 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
-                </svg>
-                Profile
-            </a>
+            <div id="mobile-profile-button" class="hidden">
+                <a href="/pages/profile.html" class="block w-full bg-gray-800 hover:bg-gray-700 px-4 py-2 rounded-md font-medium text-center transition duration-300 flex items-center justify-center">
+                    <svg class="w-5 h-5 mr-2 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                    </svg>
+                    Profile
+                </a>
+                <button onclick="logout()" class="block w-full bg-red-600 hover:bg-red-700 px-4 py-2 rounded-md font-medium text-center transition duration-300 mt-2">
+                    Logout
+                </button>
+            </div>
         </div>
     </div>
 </nav>
 
 <script>
-// This would be replaced with your actual authentication check
-// For demonstration, we'll use a simple flag
-let isLoggedIn = false; // Change this to true to see the profile button
+// Initialize Firebase
+const firebaseConfig = {
+    apiKey: "AIzaSyDSop37O02a-6UpU71lWqMR9Np2iyx2ai8",
+    authDomain: "genexisai-4e11a.firebaseapp.com",
+    projectId: "genexisai-4e11a",
+    storageBucket: "genexisai-4e11a.firebasestorage.app",
+    messagingSenderId: "586763763562",
+    appId: "1:586763763562:web:91537f8a02aef13",
+    measurementId: "G-3Q4DDM7P8X"
+};
 
-function updateAuthButtons() {
-    if (isLoggedIn) {
-        // Show profile buttons, hide login buttons
-        document.getElementById('login-button').classList.add('hidden');
-        document.getElementById('profile-button').classList.remove('hidden');
-        document.getElementById('mobile-login-button').classList.add('hidden');
-        document.getElementById('mobile-profile-button').classList.remove('hidden');
+firebase.initializeApp(firebaseConfig);
+const auth = firebase.auth();
+
+function updateAuthButtons(user) {
+    const loginButton = document.getElementById('login-button');
+    const profileButton = document.getElementById('profile-button');
+    const mobileLoginButton = document.getElementById('mobile-login-button');
+    const mobileProfileButton = document.getElementById('mobile-profile-button');
+
+    if (user) {
+        loginButton.classList.add('hidden');
+        profileButton.classList.remove('hidden');
+        mobileLoginButton.classList.add('hidden');
+        mobileProfileButton.classList.remove('hidden');
     } else {
-        // Show login buttons, hide profile buttons
-        document.getElementById('login-button').classList.remove('hidden');
-        document.getElementById('profile-button').classList.add('hidden');
-        document.getElementById('mobile-login-button').classList.remove('hidden');
-        document.getElementById('mobile-profile-button').classList.add('hidden');
+        loginButton.classList.remove('hidden');
+        profileButton.classList.add('hidden');
+        mobileLoginButton.classList.remove('hidden');
+        mobileProfileButton.classList.add('hidden');
     }
 }
 
-// Initialize buttons on page load
-document.addEventListener('DOMContentLoaded', updateAuthButtons);
+function logout() {
+    auth.signOut().then(() => {
+        console.log("User logged out successfully");
+        window.location.href = '/index.html';
+    }).catch((error) => {
+        console.error("Logout error:", error.message);
+    });
+}
 
-// In a real app, you would call updateAuthButtons() after login/logout
-// For example:
-// function login() {
-//     isLoggedIn = true;
-//     updateAuthButtons();
-// }
-// 
-// function logout() {
-//     isLoggedIn = false;
-//     updateAuthButtons();
-// }
+auth.onAuthStateChanged((user) => {
+    console.log("Auth state changed:", user ? user.displayName : "No user");
+    updateAuthButtons(user);
+});
+
+document.addEventListener('DOMContentLoaded', () => {
+    const user = auth.currentUser;
+    updateAuthButtons(user);
+});
 </script>
-
 
 
     <div class="container mx-auto px-4 py-8">
