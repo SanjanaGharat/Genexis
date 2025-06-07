@@ -5,47 +5,134 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Genexis | Login</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Load Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-auth-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-firestore-compat.js"></script>
+    <script>
+      
+        
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        teal: '#1D4E6B',
+                        electric: '#00F5D0',
+                        neon: '#00E5FF',
+                    },
+                    fontFamily: {
+                        sans: ['Montserrat', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
 </head>
-<body class="bg-black text-white flex items-center justify-center min-h-screen">
-    <div class="w-full max-w-md p-8 bg-gray-900 rounded-lg shadow-lg">
-        <h1 class="text-3xl font-bold text-center text-[#00F5D0] mb-6">Login to Genexis</h1>
-        <div id="status" class="mb-4 text-center hidden"></div>
-
-        <form id="loginForm" class="space-y-4">
-            <div>
-                <label for="email" class="block text-sm font-medium">Email</label>
-                <input type="email" id="email" required class="w-full mt-1 p-2 bg-gray-800 border border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-[#00F5D0]">
+<body class="bg-black text-white font-sans flex items-center justify-center min-h-screen p-4">
+    <div class="bg-teal/80 backdrop-blur-sm rounded-xl p-8 md:p-10 w-full max-w-md border border-neon shadow-lg shadow-neon/20 relative overflow-hidden">
+        <!-- Background glows -->
+        <div class="absolute -top-20 -left-20 w-40 h-40 bg-electric/10 rounded-full filter blur-xl"></div>
+        <div class="absolute -bottom-20 -right-20 w-40 h-40 bg-neon/10 rounded-full filter blur-xl"></div>
+        
+        <!-- Content -->
+        <div class="relative z-10">
+            <!-- Logo -->
+            <div class="text-center mb-8">
+                <h1 class="text-electric text-3xl font-bold">
+                <a 
+                    href="/" 
+                    class="relative group"
+                >
+                    GENEXIS
+                    <span class="absolute left-0 -bottom-1 w-0 h-0.5 bg-electric transition-all duration-300 group-hover:w-full"></span>
+                </a>
+                </h1>
+                <p class="text-white/80 text-sm mt-1">BioXAI Epigenetic Clock Reversal Predictor</p>
+                <div class="mt-6 h-px bg-gradient-to-r from-transparent via-neon to-transparent"></div>
             </div>
-
-            <div>
-                <label for="password" class="block text-sm font-medium">Password</label>
-                <input type="password" id="password" required class="w-full mt-1 p-2 bg-gray-800 border border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-[#00F5D0]">
+            
+            <!-- Login Form -->
+            <form class="space-y-6">
+                <div>
+                    <label class="block text-neon text-sm font-medium mb-2">Email</label>
+                    <input 
+                        type="email" 
+                        class="w-full px-4 py-3 bg-black/50 rounded-lg border border-teal focus:border-neon focus:ring-1 focus:ring-neon/50 outline-none transition"
+                        placeholder="user@genexis.ai"
+                        required
+                    >
+                </div>
+                
+                <div>
+                    <label class="block text-neon text-sm font-medium mb-2">Password</label>
+                    <input 
+                        type="password" 
+                        class="w-full px-4 py-3 bg-black/50 rounded-lg border border-teal focus:border-neon focus:ring-1 focus:ring-neon/50 outline-none transition"
+                        placeholder="••••••••"
+                        required
+                    >
+                </div>
+                
+                <div class="flex justify-between items-center">
+                    <div class="flex items-center">
+                        <input 
+                            type="checkbox" 
+                            id="remember"
+                            class="rounded border-teal bg-black/50 text-electric focus:ring-neon"
+                        >
+                        <label for="remember" class="ml-2 text-sm text-white/80">Remember me</label>
+                    </div>
+                    <a href="#" class="text-sm text-neon hover:text-electric transition">Forgot password?</a>
+                </div>
+                
+                <button 
+                    type="submit"
+                    class="w-full py-3 bg-electric hover:bg-neon text-black font-semibold rounded-lg transition-all duration-300 transform hover:-translate-y-1"
+                >
+                    Login to Dashboard
+                </button>
+            </form>
+            
+            <!-- Divider with "or" -->
+            <div class="flex items-center my-6">
+                <div class="flex-1 h-px bg-gradient-to-r from-transparent via-neon/50 to-neon/30"></div>
+                <span class="px-4 text-sm text-neon/80">or continue with</span>
+                <div class="flex-1 h-px bg-gradient-to-r from-neon/30 via-neon/50 to-transparent"></div>
             </div>
-
-            <div class="flex items-center">
-                <input type="checkbox" id="rememberMe" class="h-4 w-4 text-[#00F5D0] bg-gray-800 border-gray-700 rounded focus:ring-[#00F5D0]">
-                <label for="rememberMe" class="ml-2 text-sm">Remember me</label>
+            
+            <!-- Google Login Button -->
+            <div class="mb-2">
+                <button 
+                    onclick="googleSignIn()"
+                    class="w-full flex items-center justify-center gap-2 py-3 px-4 bg-white/10 hover:bg-white/20 border border-neon/30 rounded-lg transition-all duration-300 group"
+                >
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" class="fill-current text-white group-hover:text-neon">
+                        <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
+                        <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
+                        <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/>
+                        <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
+                    </svg>
+                    <span class="text-white group-hover:text-neon font-medium">Login with Google</span>
+                </button>
             </div>
-
-            <button type="submit" class="w-full py-2 bg-[#00F5D0] text-black font-bold rounded-md hover:bg-[#00E0C0] transition duration-300">Login</button>
-        </form>
-
-        <div class="mt-4 text-center">
-            <p class="text-sm">Or login with</p>
-            <button onclick="googleSignIn()" class="mt-2 w-full py-2 bg-white text-black font-bold rounded-md hover:bg-gray-200 transition duration-300 flex items-center justify-center">
-                <img src="https://www.google.com/favicon.ico" alt="Google Icon" class="w-5 h-5 mr-2"> Login with Google
-            </button>
+            
+            <p id="authStatus" class="text-center text-sm py-2"></p>
+            
+            <!-- Signup redirect -->
+            <div class="text-center text-sm pt-4">
+                <p class="text-white/80">
+                    Don't have an account? 
+                    <a href="/pages/signup.html" class="text-neon hover:text-electric font-medium transition">Create account</a>
+                </p>
+            </div>
+            
+            <!-- Footer note -->
+            <div class="mt-8 h-px bg-gradient-to-r from-transparent via-neon to-transparent"></div>
+            <p class="text-center text-xs text-white/60 mt-4">
+                Your epigenetic data is processed with bank-level security
+            </p>
         </div>
-
-        <p class="mt-4 text-center text-sm">Don't have an account? <a href="signup.html" class="text-[#00F5D0] hover:underline">Sign up here</a></p>
-
-        <!-- Add Date and Time -->
-        <p id="current-date-time" class="mt-4 text-center text-sm text-gray-500"></p>
     </div>
-
+    
     <script>
         const firebaseConfig = {
             apiKey: "AIzaSyDSop37O02a-6UpU71lWqMR9Np2iyx2ai8",

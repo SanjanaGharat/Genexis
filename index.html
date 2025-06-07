@@ -263,58 +263,42 @@
 </nav>
 
 <script>
-// Initialize Firebase
-const firebaseConfig = {
-    apiKey: "AIzaSyDSop37O02a-6UpU71lWqMR9Np2iyx2ai8",
-    authDomain: "genexisai-4e11a.firebaseapp.com",
-    projectId: "genexisai-4e11a",
-    storageBucket: "genexisai-4e11a.firebasestorage.app",
-    messagingSenderId: "586763763562",
-    appId: "1:586763763562:web:91537f8a02aef13",
-    measurementId: "G-3Q4DDM7P8X"
-};
+// This would be replaced with your actual authentication check
+// For demonstration, we'll use a simple flag
+let isLoggedIn = false; // Change this to true to see the profile button
 
-firebase.initializeApp(firebaseConfig);
-const auth = firebase.auth();
-
-function updateAuthButtons(user) {
-    const loginButton = document.getElementById('login-button');
-    const profileButton = document.getElementById('profile-button');
-    const mobileLoginButton = document.getElementById('mobile-login-button');
-    const mobileProfileButton = document.getElementById('mobile-profile-button');
-
-    if (user) {
-        loginButton.classList.add('hidden');
-        profileButton.classList.remove('hidden');
-        mobileLoginButton.classList.add('hidden');
-        mobileProfileButton.classList.remove('hidden');
+function updateAuthButtons() {
+    if (isLoggedIn) {
+        // Show profile buttons, hide login buttons
+        document.getElementById('login-button').classList.add('hidden');
+        document.getElementById('profile-button').classList.remove('hidden');
+        document.getElementById('mobile-login-button').classList.add('hidden');
+        document.getElementById('mobile-profile-button').classList.remove('hidden');
     } else {
-        loginButton.classList.remove('hidden');
-        profileButton.classList.add('hidden');
-        mobileLoginButton.classList.remove('hidden');
-        mobileProfileButton.classList.add('hidden');
+        // Show login buttons, hide profile buttons
+        document.getElementById('login-button').classList.remove('hidden');
+        document.getElementById('profile-button').classList.add('hidden');
+        document.getElementById('mobile-login-button').classList.remove('hidden');
+        document.getElementById('mobile-profile-button').classList.add('hidden');
     }
 }
 
-function logout() {
-    auth.signOut().then(() => {
-        console.log("User logged out successfully");
-        window.location.href = '/index.html';
-    }).catch((error) => {
-        console.error("Logout error:", error.message);
-    });
-}
+// Initialize buttons on page load
+document.addEventListener('DOMContentLoaded', updateAuthButtons);
 
-auth.onAuthStateChanged((user) => {
-    console.log("Auth state changed:", user ? user.displayName : "No user");
-    updateAuthButtons(user);
-});
-
-document.addEventListener('DOMContentLoaded', () => {
-    const user = auth.currentUser;
-    updateAuthButtons(user);
-});
+// In a real app, you would call updateAuthButtons() after login/logout
+// For example:
+// function login() {
+//     isLoggedIn = true;
+//     updateAuthButtons();
+// }
+// 
+// function logout() {
+//     isLoggedIn = false;
+//     updateAuthButtons();
+// }
 </script>
+
 
     <!-- Hero Section -->
     <section class="hero-gradient text-white py-20 px-4">
