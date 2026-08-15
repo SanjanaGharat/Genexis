@@ -1,0 +1,118 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: dark;
+  --font-fraunces: "Fraunces", ui-serif, Georgia, serif;
+  --font-manrope: "Manrope", ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --font-plex-mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: #07090f;
+  color: #eef0f6;
+}
+
+::selection {
+  background: #2be3a0;
+  color: #07090f;
+}
+
+/* Focus visibility — accessibility floor */
+:focus-visible {
+  outline: 2px solid #6dffc4;
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* 3D scene utilities */
+.perspective {
+  perspective: 1400px;
+}
+.preserve-3d {
+  transform-style: preserve-3d;
+}
+.backface-hidden {
+  backface-visibility: hidden;
+}
+
+.text-balance {
+  text-wrap: balance;
+}
+
+/* Thin scrollbar for data panels */
+.thin-scroll::-webkit-scrollbar {
+  width: 6px;
+}
+.thin-scroll::-webkit-scrollbar-thumb {
+  background: #232a42;
+  border-radius: 999px;
+}
+
+.card-glass {
+  background: linear-gradient(180deg, rgba(23,28,46,0.7), rgba(11,14,23,0.7));
+  border: 1px solid rgba(255,255,255,0.07);
+  backdrop-filter: blur(14px);
+}
+
+.eyebrow {
+  letter-spacing: 0.16em;
+}
+
+.grain-overlay {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.035;
+  mix-blend-mode: overlay;
+  background-image: url('/noise.svg');
+  background-size: 220px;
+  z-index: 40;
+}
+
+/* Print / "export as PDF" layout — triggered by the report's Export
+   button calling window.print(). Hides chrome, keeps the report legible
+   in black-and-white, and lets the browser's native print-to-PDF do the
+   file generation (no extra client-side PDF library required). */
+@media print {
+  .no-print {
+    display: none !important;
+  }
+  body {
+    background: white !important;
+    color: black !important;
+  }
+  .grain-overlay,
+  .bg-aurora {
+    display: none !important;
+  }
+  .card-glass {
+    background: white !important;
+    border: 1px solid #ccc !important;
+    backdrop-filter: none !important;
+    break-inside: avoid;
+  }
+  .text-parchment,
+  .text-white\/80,
+  .text-white\/70,
+  .text-white\/60 {
+    color: #111 !important;
+  }
+  main {
+    padding-top: 0 !important;
+  }
+}
